@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16
+    container_name: estudo_db
+    environment:
+      POSTGRES_DB: estudo
+      POSTGRES_USER: estudo
+      POSTGRES_PASSWORD: estudo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U estudo -d estudo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ../spring-api
+    container_name: estudo_api
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

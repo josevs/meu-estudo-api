@@ -18,7 +18,7 @@ services:
 
   api:
     build:
-      context: ../spring-api
+      context: ../meu-estudo-api
     container_name: estudo_api
     environment:
       SPRING_PROFILES_ACTIVE: docker
